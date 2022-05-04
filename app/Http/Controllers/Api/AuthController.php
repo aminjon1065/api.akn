@@ -72,10 +72,12 @@ class AuthController extends Controller
             return $this->error('Credentials not match', 401);
         }
         $token = auth()->user()->createToken('__sign_token')->plainTextToken;
+        $user = $this->me($token)->only(['name', 'email', 'region', 'position', 'department', 'rank', 'avatar']);
         return response()->json([
             'status' => 'Success',
-            'message' => 'success registered',
-            'data' => $token
+            'message' => 'success login',
+            'token' => $token,
+            'data' => $user
         ], 201);
     }
 
