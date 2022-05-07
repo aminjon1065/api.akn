@@ -23,6 +23,7 @@ class AuthController extends Controller
             'avatar' => 'required|image',
 //            'signature' => 'required|mimes:jpeg,bmp,png,pdf,docx,doc,xlsx, xls'
         ]);
+
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
