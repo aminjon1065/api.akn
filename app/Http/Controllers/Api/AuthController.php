@@ -52,13 +52,14 @@ class AuthController extends Controller
         ];
 
         $user = User::create($data);
-        $token = $user->createToken('__register_token')->plainTextToken;
+        $user->assignRole('user');
+//        $token = $user->createToken('__register_token')->plainTextToken;
 
         return response()->json([
-            'status' => 'Success',
-            'message' => 'success registered',
+            'status' => 'success',
+            'message' => 'Успешно зарегистрировано',
 //            'data' => 'token: ' . $token . ' ',
-            'data' => $token,
+//            'data' => $token,
         ], 201);
     }
 
@@ -70,13 +71,17 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($attr)) {
-            return $this->error('Credentials not match', 401);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Не правильный E-mail или пароль'
+            ], 401);
         }
+
         $token = auth()->user()->createToken('__sign_token')->plainTextToken;
         $user = $this->me($token)->only(['name', 'email', 'region', 'position', 'department', 'rank', 'avatar']);
         return response()->json([
-            'status' => 'Success',
-            'message' => 'success login',
+            'status' => 'success',
+            'message' => 'Успешно залогинился',
             'token' => $token,
             'data' => $user
         ], 201);
@@ -86,8 +91,8 @@ class AuthController extends Controller
     {
         auth()->user()->tokens()->delete();
         return response()->json([
-            'status' => 'Success',
-            'message' => 'success logout',
+            'status' => 'success',
+            'message' => 'Успешно вышли',
         ], 204);
     }
 

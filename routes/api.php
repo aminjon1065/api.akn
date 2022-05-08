@@ -27,3 +27,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/files', [\App\Http\Controllers\Api\FilesController::class, 'index']);
     Route::post('/message', [\App\Http\Controllers\Api\MessageController::class, 'newMessage']);
 });
+
+Route::get('test', [\App\Http\Controllers\FetchUsers::class, 'index'])->middleware(['auth:sanctum', 'role:admin']);
