@@ -52,7 +52,7 @@ class AuthController extends Controller
         ];
 
         $user = User::create($data);
-        $user->assignRole('user');
+        $user->assignRole('users');
 //        $token = $user->createToken('__register_token')->plainTextToken;
 
         return response()->json([
@@ -76,7 +76,6 @@ class AuthController extends Controller
                 'message' => 'Не правильный E-mail или пароль'
             ], 401);
         }
-
         $token = auth()->user()->createToken('__sign_token')->plainTextToken;
         $user = $this->me($token)->only(['name', 'email', 'region', 'position', 'department', 'rank', 'avatar']);
         return response()->json([
